@@ -1,0 +1,58 @@
+---
+apiVersion: v1
+data:
+  tls.crt: awo= # Replace this with your Base64 encoded cert
+  tls.key: awo= # Same as above, but with the key
+kind: Secret
+metadata:
+  name: nginx
+  namespace: default
+type: Opaque
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+        ports:
+        - containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx
+spec:
+  selector:
+    app: nginx
+  type: NodePort
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30500
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx
+spec: # Uncomment below to use TLS with the secret defined above
+#  tls:
+#  - secretName: nginx
+  backend:
+    serviceName: nginx
+    servicePort: 80
