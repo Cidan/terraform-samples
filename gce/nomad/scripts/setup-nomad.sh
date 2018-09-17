@@ -31,7 +31,7 @@ sudo add-apt-repository \
    stable"
 
 ## TODO: pin version of docker
-apt-get update && apt-get install -y docker-ce
+apt-get update && apt-get install -y docker-ce || true
 fi
 
 ## TODO: Possibly get from GCS bucket?
