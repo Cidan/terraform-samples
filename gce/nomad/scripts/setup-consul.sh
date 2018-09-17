@@ -12,8 +12,10 @@ useradd consul || true
 mkdir -p /etc/consul
 mkdir -p /opt/consul && chown -R consul.consul /opt/consul
 REGION=`curl -sq -H "Metadata-Flavor: Google"  http://metadata.google.internal/computeMetadata/v1/instance/zone | cut -d '/' -f 4 | cut -d '-' -f 1-2`
+
 ## TODO: encryption of gossip
 ## TODO: encryption of RPC (TLS CA?)
+
 cat >/etc/consul/consul.json << EOF
 {
         "datacenter": "$REGION",
