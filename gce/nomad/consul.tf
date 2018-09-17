@@ -37,10 +37,11 @@ resource "google_compute_instance_template" "consul-nomad" {
 
 resource "google_compute_region_instance_group_manager" "consul-nomad" {
   name = "consul-nomad"
+  count = "${length(var.cluster-datacenters)}"
 
   base_instance_name         = "consul-nomad"
   instance_template          = "${google_compute_instance_template.consul-nomad.self_link}"
-  region                     = "us-central1"
+  region                     = "${var.cluster-datacenters[count.index]}"
 
   target_size  = 5
 
