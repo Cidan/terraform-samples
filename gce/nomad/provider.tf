@@ -1,4 +1,10 @@
 variable "project" {}
+variable "nomad-client-count" {
+  default = "4"
+}
+variable "nomad-client-type" {
+  default = "n1-standard-8"
+}
 // Configure the Google Cloud provider
 provider "google" {
   project     = "${var.project}"

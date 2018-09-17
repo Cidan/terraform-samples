@@ -10,3 +10,9 @@ resource "google_storage_bucket_object" "setup-consul" {
   source = "scripts/setup-consul.sh"
   bucket = "${google_storage_bucket.nomad-scripts.name}"
 }
+
+resource "google_storage_bucket_object" "setup-nomad" {
+  name   = "setup-nomad.sh"
+  source = "scripts/setup-nomad.sh"
+  bucket = "${google_storage_bucket.nomad-scripts.name}"
+}

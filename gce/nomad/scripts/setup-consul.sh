@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+SERVER=false
+BOOTCOUNT=0
+if [[ "$1" == "server" ]]; then
+        SERVER=true
+        BOOTCOUNT=5
+fi
+
 ## TODO: guard each step so this is idempotent
 apt-get update && apt-get install -y unzip
 
@@ -20,8 +27,8 @@ cat >/etc/consul/consul.json << EOF
 {
         "datacenter": "$REGION",
         "data_dir": "/opt/consul",
-        "bootstrap_expect": 5,
-        "server": true,
+        "bootstrap_expect": $BOOTCOUNT,
+        "server": $SERVER,
         "ui": true,
         "retry_join": ["provider=gce tag_value=consul-nomad zone_pattern=$REGION.*"],
         "retry_interval_wan": "5s"
