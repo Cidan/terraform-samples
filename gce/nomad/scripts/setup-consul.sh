@@ -13,7 +13,7 @@ apt-get update && apt-get install -y unzip
 
 ## TODO: Possibly get from GCS bucket?
 curl -sq -o /tmp/consul.zip https://releases.hashicorp.com/consul/1.2.3/consul_1.2.3_linux_amd64.zip
-cd /usr/local/bin && unzip /tmp/consul.zip
+cd /usr/local/bin && unzip -o /tmp/consul.zip
 
 useradd consul || true
 mkdir -p /etc/consul
