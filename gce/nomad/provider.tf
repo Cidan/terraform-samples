@@ -1,4 +1,8 @@
 variable "project" {}
+
+variable "cluster-datacenters" {
+  default = ["us-central1"]
+}
 variable "nomad-client-count" {
   default = "4"
 }
