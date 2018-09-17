@@ -2,8 +2,12 @@
 set -e
 
 ## TODO: guard each step so this is idempotent
+apt-get update && apt-get install -y unzip
 
-curl -s -o /tmp/consul.zip https://releases.hashicorp.com/consul/1.2.3/consul_1.2.3_linux_amd64.zip
+## TODO: Possibly get from GCS bucket?
+curl -sq -o /tmp/consul.zip https://releases.hashicorp.com/consul/1.2.3/consul_1.2.3_linux_amd64.zip
+cd /usr/local/bin && unzip /tmp/consul.zip
+
 useradd consul || true
 mkdir -p /etc/consul
 mkdir -p /opt/consul && chown -R consul.consul /opt/consul
@@ -16,7 +20,8 @@ cat >/etc/consul/consul.json << EOF
         "bootstrap_expect": 5,
         "server": true,
         "ui": true,
-        "retry_join": ["provider=gce tag_value=consul-nomad zone_pattern=$REGION.*"]
+        "retry_join": ["provider=gce tag_value=consul-nomad zone_pattern=$REGION.*"],
+        "retry_interval_wan": "5s"
 }
 EOF
 
